@@ -119,7 +119,7 @@ function enviarEmail(e){
                 setTimeout ( () => {
                         parrafo.remove();
 
-                        resetearFormulario();
+                        resetearFormulario(e);
                 }, 3000 ); 
         }, 3000 );
 }
