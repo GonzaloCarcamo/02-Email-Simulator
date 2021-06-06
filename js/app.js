@@ -1,6 +1,7 @@
 // variables
 const btnEnviar = document.querySelector('#enviar');
 const formulario = document.querySelector('#enviar-mail');
+const btnReset = document.querySelector('#resetBtn');
 const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
@@ -18,6 +19,12 @@ function eventsListeners(){
         email.addEventListener('blur', validarFormulario);
         asunto.addEventListener('blur', validarFormulario);
         mensaje.addEventListener('blur', validarFormulario);
+
+        // Reinicio
+        btnReset.addEventListener('click', resetearFormulario);
+
+        // Enviar email
+        formulario.addEventListener('submit', enviarEmail);
 }
 
 
@@ -87,4 +94,40 @@ function mostrarError(mensaje){
         if(errores.length === 0){
                 formulario.appendChild(mensajeError);
         }
+}
+
+// Enviar Email
+function enviarEmail(e){
+        e.preventDefault();
+
+        // Mostrar spinner
+        const spinner = document.querySelector('#spinner');
+        spinner.style.display = 'flex';
+
+        // Después de 3 segundos ocultar spinner
+        setTimeout( () => {
+                spinner.style.display = 'none';
+
+                // Mensaje de envío
+                const parrafo = document.createElement('p');
+                parrafo.textContent = 'El mensaje fue enviado';
+                parrafo.classList.add('text-center', 'my-10', 'p-2', 'bg-green-500', 'text-white');
+
+                // Inserta el párrafo antes del spinner
+                formulario.insertBefore(parrafo, spinner);
+
+                setTimeout ( () => {
+                        parrafo.remove();
+
+                        resetearFormulario();
+                }, 3000 ); 
+        }, 3000 );
+}
+
+// Reset
+function resetearFormulario(e){
+        e.preventDefault();
+        formulario.reset();
+
+        iniciarApp();
 }
